@@ -100,13 +100,12 @@ export const App: React.FC = () => {
       .then(response => {
         setTodos(prev => [...prev, response]);
         setInputValue('');
-        setCreateNewTodo(null);
       })
       .catch(() => {
-        setCreateNewTodo(null);
         showError('Unable to add a todo');
       })
       .finally(() => {
+        setCreateNewTodo(null);
         setDoDisable(false);
 
         // #region AddFocus

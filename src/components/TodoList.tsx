@@ -5,7 +5,6 @@ import { Todo } from '../types/Todo';
 import { TypeNewTodo } from '../App';
 import React from 'react';
 
-
 export interface Props {
   todos: Todo[];
   NewTodo: TypeNewTodo | null;
