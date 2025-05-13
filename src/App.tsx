@@ -62,7 +62,7 @@ export const App: React.FC = () => {
   // #region DoFetch
 
   const doPost = (titleValue: string) => {
-    if (titleValue.length === 0) {
+    if (titleValue.trim().length === 0) {
       showError('Title should not be empty');
 
       return;
@@ -79,6 +79,7 @@ export const App: React.FC = () => {
 
     postTodos(createNewTodo.userId, createNewTodo)
       .then(response => {
+        console.log(response);
         setTodos(prev => [...prev, response]);
         setInputValue('');
         setCreateNewTodo(null);
