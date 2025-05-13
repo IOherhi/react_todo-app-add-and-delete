@@ -1,0 +1,87 @@
+import classNames from 'classnames';
+import { Todo } from '../types/Todo';
+import React from 'react';
+import { TypeNewTodo } from '../App';
+
+export interface props {
+  todos: Todo[];
+  NewTodo: TypeNewTodo | null;
+  visibleTodos: Todo[];
+  deletePost: (n: number) => void
+}
+
+export const TodoList: React.FC<props> = ({
+    todos,
+    visibleTodos,
+    NewTodo,
+    deletePost
+  }) => {
+  return (
+    <section className="todoapp__main" data-cy="TodoList">
+
+      {NewTodo && (
+        <div
+          data-cy="Todo"
+          className='todo'
+        >
+          <label className="todo__status-label">
+            <input
+              data-cy="TodoStatus"
+              type="checkbox"
+              className="todo__status"
+            />
+          </label>
+
+          <span data-cy="TodoTitle" className="todo__title">
+            {NewTodo.title}
+          </span>
+
+          <button type="button" className="todo__remove" data-cy="TodoDelete">
+            ×
+          </button>
+
+          <div data-cy="TodoLoader" className="modal overlay is-active">
+            <div className="modal-background has-background-white-ter" />
+            <div className="loader" />
+          </div>
+        </div>
+      )}
+
+      {todos.length > 0 &&
+        visibleTodos.map(todo => {
+          return (
+            <div
+              key={todo.id}
+              data-cy="Todo"
+              className={classNames('todo', {
+                completed: todo.completed === true,
+              })}
+            >
+              <label className="todo__status-label">
+                <input
+                  data-cy="TodoStatus"
+                  type="checkbox"
+                  className="todo__status"
+                  checked={todo.completed}
+                />
+              </label>
+
+              <span data-cy="TodoTitle" className="todo__title">
+                {todo.title}
+              </span>
+
+              <button
+                type="button"
+                className="todo__remove"
+                onClick={() => deletePost(todo.id)}
+                data-cy="TodoDelete"
+              >
+                ×
+              </button>
+            </div>
+          );
+      })}
+
+    </section>
+  );
+};
