@@ -1,19 +1,26 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import classNames from 'classnames';
 import { Todo } from '../types/Todo';
-import React from 'react';
 import { TypeNewTodo } from '../App';
+import React from 'react';
 
-export interface props {
+
+export interface Props {
   todos: Todo[];
   NewTodo: TypeNewTodo | null;
   visibleTodos: Todo[];
+  showLoader: (n: number) => void;
+  LoderId: number;
   deletePost: (n: number) => void;
 }
 
-export const TodoList: React.FC<props> = ({
+export const TodoList: React.FC<Props> = ({
   todos,
   visibleTodos,
   NewTodo,
+  LoderId,
+  showLoader,
   deletePost,
 }) => {
   return (
@@ -28,10 +35,14 @@ export const TodoList: React.FC<props> = ({
                 completed: todo.completed === true,
               })}
             >
-              <label className="todo__status-label">
+              <label
+                className="todo__status-label"
+                htmlFor={`status-${todo.id}`}
+              >
                 <input
                   data-cy="TodoStatus"
                   type="checkbox"
+                  id={`status-${todo.id}`}
                   className="todo__status"
                   checked={todo.completed}
                 />
@@ -44,26 +55,32 @@ export const TodoList: React.FC<props> = ({
               <button
                 type="button"
                 className="todo__remove"
-                onClick={() => deletePost(todo.id)}
+                onClick={() => {
+                  showLoader(todo.id);
+                  deletePost(todo.id);
+                }}
                 data-cy="TodoDelete"
               >
                 ×
               </button>
 
-              <div data-cy="TodoLoader" className="modal overlay">
-                <div className="modal-background has-background-white-ter" />
-                <div className="loader" />
-              </div>
+              {LoderId === todo.id && (
+                <div data-cy="TodoLoader" className="modal overlay is-active">
+                  <div className="modal-background has-background-white-ter" />
+                  <div className="loader" />
+                </div>
+              )}
             </div>
           );
         })}
 
       {NewTodo && (
         <div data-cy="Todo" className="todo">
-          <label className="todo__status-label">
+          <label htmlFor="esseso" className="todo__status-label">
             <input
               data-cy="TodoStatus"
               type="checkbox"
+              id="esseso"
               className="todo__status"
             />
           </label>

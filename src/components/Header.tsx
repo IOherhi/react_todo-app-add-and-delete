@@ -3,12 +3,16 @@ import React from 'react';
 type Props = {
   doPost: () => void;
   inputValue: string;
+  doDisable: boolean;
+  inputRef: React.RefObject<HTMLInputElement>;
   setInputValue: (p: string) => void;
 };
 
 export const Header: React.FC<Props> = ({
   doPost,
   inputValue,
+  doDisable,
+  inputRef,
   setInputValue,
 }) => {
   return (
@@ -29,7 +33,9 @@ export const Header: React.FC<Props> = ({
         }}
       >
         <input
+          ref={inputRef}
           autoFocus
+          disabled={doDisable}
           type="text"
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}

@@ -29,14 +29,32 @@ export type TypeNewTodo = {
 const USER_ID = 2881;
 
 export const App: React.FC = () => {
+  // #region AddFocus
+  const inputRef = useRef<HTMLInputElement>(null);
+  const useRefTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const focusForInput = () => {
+    inputRef.current?.focus();
+  };
+  // #endregion
+
+  // #region AddLoader
+  const [LoderId, setLoderId] = useState<number | null>(null);
+
+  const showLoader = (id: number) => {
+    setLoderId(id);
+  };
+  // #endregion
+
   // #region State
 
   const [todos, setTodos] = useState<Todo[]>([]);
   const [hasError, setHasError] = useState(false);
   const [theError, setTheError] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
-  const [NewTodo, setCreateNewTodo] = useState<TypeNewTodo | null>(null);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [NewTodo, setCreateNewTodo] = useState<TypeNewTodo | null>(null);
+  const [doDisable, setDoDisable] = useState(false);
 
   // #endregion
 
@@ -71,21 +89,35 @@ export const App: React.FC = () => {
     const createNewTodo: TypeNewTodo = {
       id: null,
       userId: USER_ID,
-      title: titleValue,
+      title: titleValue.trim(),
       completed: false,
     };
 
     setCreateNewTodo(createNewTodo);
+    setDoDisable(true);
 
-    postTodos(createNewTodo.userId, createNewTodo)
+    postTodos(createNewTodo)
       .then(response => {
-        console.log(response);
         setTodos(prev => [...prev, response]);
         setInputValue('');
         setCreateNewTodo(null);
       })
       .catch(() => {
+        setCreateNewTodo(null);
         showError('Unable to add a todo');
+      })
+      .finally(() => {
+        setDoDisable(false);
+
+        // #region AddFocus
+        if (useRefTimer.current) {
+          clearTimeout(useRefTimer.current);
+        }
+
+        useRefTimer.current = setTimeout(() => {
+          focusForInput();
+        }, 0);
+        // #endregion AddFocus
       });
   };
 
@@ -129,13 +161,17 @@ export const App: React.FC = () => {
 
       <div className="todoapp__content">
         <Header
+          inputRef={inputRef}
           doPost={doPost}
+          doDisable={doDisable}
           inputValue={inputValue}
           setInputValue={setInputValue}
         />
 
         <TodoList
+          LoderId={LoderId}
           todos={todos}
+          showLoader={showLoader}
           NewTodo={NewTodo}
           deletePost={deletePost}
           visibleTodos={visibleTodos}
