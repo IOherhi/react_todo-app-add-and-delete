@@ -7,23 +7,19 @@ export interface props {
   todos: Todo[];
   NewTodo: TypeNewTodo | null;
   visibleTodos: Todo[];
-  deletePost: (n: number) => void
+  deletePost: (n: number) => void;
 }
 
 export const TodoList: React.FC<props> = ({
-    todos,
-    visibleTodos,
-    NewTodo,
-    deletePost
-  }) => {
+  todos,
+  visibleTodos,
+  NewTodo,
+  deletePost,
+}) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
-
       {NewTodo && (
-        <div
-          data-cy="Todo"
-          className='todo'
-        >
+        <div data-cy="Todo" className="todo">
           <label className="todo__status-label">
             <input
               data-cy="TodoStatus"
@@ -80,8 +76,7 @@ export const TodoList: React.FC<props> = ({
               </button>
             </div>
           );
-      })}
-
+        })}
     </section>
   );
 };
