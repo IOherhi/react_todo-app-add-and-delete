@@ -79,7 +79,7 @@ export const App: React.FC = () => {
 
     postTodos(createNewTodo.userId, createNewTodo)
       .then(response => {
-        setTodos(prev => [response, ...prev]);
+        setTodos(prev => [...prev, response]);
         setInputValue('');
         setCreateNewTodo(null);
       })
