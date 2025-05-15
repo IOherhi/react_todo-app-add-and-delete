@@ -127,7 +127,8 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         showError('Unable to delete a todo');
-      });
+      })
+      .finally(() => focusForInput());
   };
 
   // #endregion

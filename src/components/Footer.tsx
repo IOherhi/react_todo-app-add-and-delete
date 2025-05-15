@@ -13,10 +13,12 @@ export const Footer: React.FC<Props> = ({ filter, setFilter, todos }) => {
     return null;
   }
 
+  const activeTasksCount = todos.filter(e => !e.completed).length;
+
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        {todos.filter(e => !e.completed).length} items left
+        {activeTasksCount} items left
       </span>
 
       <nav className="filter" data-cy="Filter">
@@ -60,13 +62,25 @@ export const Footer: React.FC<Props> = ({ filter, setFilter, todos }) => {
         </a>
       </nav>
 
-      <button
-        type="button"
-        className="todoapp__clear-completed"
-        data-cy="ClearCompletedButton"
-      >
-        Clear completed
-      </button>
+      {todos.some(todo => todo.completed) && (
+        <button
+          type="button"
+          className="todoapp__clear-completed"
+          data-cy="ClearCompletedButton"
+        >
+          Clear completed
+        </button>
+      )}
+
+      {/*activeTasksCount !== todos.length { && (
+        <button
+           type="button"
+           className="todoapp__clear-completed"
+           data-cy="ClearCompletedButton"
+          >
+            Clear completed
+        </button>
+      )} */}
     </footer>
   );
 };
