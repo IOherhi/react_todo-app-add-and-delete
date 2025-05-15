@@ -62,25 +62,15 @@ export const Footer: React.FC<Props> = ({ filter, setFilter, todos }) => {
         </a>
       </nav>
 
-      {todos.some(todo => todo.completed) && (
         <button
           type="button"
-          className="todoapp__clear-completed"
+          className={classNames=("todoapp__clear-completed", {
+            "disabled": activeTasksCount !== todos.length
+          })}
           data-cy="ClearCompletedButton"
         >
           Clear completed
         </button>
-      )}
-
-      {/*activeTasksCount !== todos.length { && (
-        <button
-           type="button"
-           className="todoapp__clear-completed"
-           data-cy="ClearCompletedButton"
-          >
-            Clear completed
-        </button>
-      )} */}
     </footer>
   );
 };
